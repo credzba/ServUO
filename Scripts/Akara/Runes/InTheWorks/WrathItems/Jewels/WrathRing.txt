@@ -1,0 +1,34 @@
+using System; 
+using Server.Spells;
+using Server.Items; 
+using Server.Targeting; 
+
+namespace Server.Items 
+{ 
+   	public class WrathRing: WrathItem 
+   	{ 
+		[Constructable]
+		public WrathRing() : base( 0x108A )
+		{
+			Weight = 0.1;
+			Name = "Wrath Ring";
+			Layer = Layer.Ring;
+		}
+
+            	public WrathRing( Serial serial ) : base ( serial ) 
+            	{             
+           	} 
+
+           	public override void Serialize( GenericWriter writer ) 
+           	{ 
+              		base.Serialize( writer ); 
+              		writer.Write( (int) 0 ); 
+           	} 
+            
+           	public override void Deserialize( GenericReader reader ) 
+           	{ 
+              		base.Deserialize( reader ); 
+              		int version = reader.ReadInt(); 
+           	} 
+        } 
+} 

@@ -435,4 +435,265 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class BlazeGranite : BaseGranite
+    {
+        [Constructable]
+        public BlazeGranite()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BlazeGranite(int amount)
+            : base(CraftResource.Blaze)
+        {
+            if (Stackable)
+                Amount = amount;
+            else
+                Amount = 1;
+        }
+
+        public BlazeGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+    public class IceGranite : BaseGranite
+    {
+        [Constructable]
+        public IceGranite()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public IceGranite(int amount)
+            : base(CraftResource.Ice)
+        {
+            if (Stackable)
+                Amount = amount;
+            else
+                Amount = 1;
+        }
+
+        public IceGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+    public class ToxicGranite : BaseGranite
+    {
+        [Constructable]
+        public ToxicGranite()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public ToxicGranite(int amount)
+            : base(CraftResource.Toxic)
+        {
+            if (Stackable)
+                Amount = amount;
+            else
+                Amount = 1;
+        }
+
+        public ToxicGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+    public class ElectrumGranite : BaseGranite
+    {
+        [Constructable]
+        public ElectrumGranite()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public ElectrumGranite(int amount)
+            : base(CraftResource.Electrum)
+        {
+            if (Stackable)
+                Amount = amount;
+            else
+                Amount = 1;
+        }
+
+        public ElectrumGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+    public class MoonstoneGranite : BaseGranite
+    {
+        [Constructable]
+        public MoonstoneGranite()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public MoonstoneGranite(int amount)
+            : base(CraftResource.Moonstone)
+        {
+            if (Stackable)
+                Amount = amount;
+            else
+                Amount = 1;
+        }
+
+        public MoonstoneGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+    public class BloodstoneGranite : BaseGranite
+    {
+        [Constructable]
+        public BloodstoneGranite()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BloodstoneGranite(int amount)
+            : base(CraftResource.Bloodstone)
+        {
+            if (Stackable)
+                Amount = amount;
+            else
+                Amount = 1;
+        }
+
+        public BloodstoneGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+    public class PlatinumGranite : BaseGranite
+    {
+        [Constructable]
+        public PlatinumGranite()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public PlatinumGranite(int amount)
+            : base(CraftResource.Platinum)
+        {
+            if (Stackable)
+                Amount = amount;
+            else
+                Amount = 1;
+        }
+
+        public PlatinumGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
 }

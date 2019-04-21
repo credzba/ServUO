@@ -318,4 +318,114 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class CopperScales : BaseScales
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.CopperScales; } }
+
+        [Constructable]
+        public CopperScales()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public CopperScales(int amount)
+            : base(CraftResource.CopperScales, amount)
+        {
+        }
+
+        public CopperScales(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+   public class SilverScales : BaseScales
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.SilverScales; } }
+
+        [Constructable]
+        public SilverScales()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public SilverScales(int amount)
+            : base(CraftResource.SilverScales, amount)
+        {
+        }
+
+        public SilverScales(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+    
+   public class GoldScales : BaseScales
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.GoldScales; } }
+
+        [Constructable]
+        public GoldScales()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public GoldScales(int amount)
+            : base(CraftResource.GoldScales, amount)
+        {
+        }
+
+        public GoldScales(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+
 }

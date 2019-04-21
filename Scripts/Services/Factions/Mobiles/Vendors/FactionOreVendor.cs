@@ -76,7 +76,7 @@ namespace Server.Factions
             public InternalBuyInfo()
             {
                 for (int i = 0; i < 5; ++i)
-                    this.Add(new GenericBuyInfo(typeof(IronOre), 16, 20, 0x19B8, 0, m_FixedSizeArgs));
+                    this.Add(new GenericBuyInfo(typeof(BlazeOre), 16, 20, 0x19B8, 0, m_FixedSizeArgs));
             }
         }
 

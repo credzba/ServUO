@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
         public MoreOrePleaseQuest()
             : base()
         { 
-            AddObjective(new ObtainObjective(typeof(IronOre), "iron ore", 5, 0x19B9));
+            AddObjective(new ObtainObjective(typeof(BlazeOre), "iron ore", 5, 0x19B9));
 
             AddReward(new BaseReward(typeof(MinersQuestSatchel), 1074282)); // Craftsman's Satchel
         }

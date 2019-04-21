@@ -15,11 +15,23 @@ namespace Server.Items
         Agapite,
         Verite,
         Valorite,
+        Blaze,
+        Ice,
+        Toxic,
+        Electrum,
+        Moonstone,
+        Bloodstone,
+        Platinum,
 
         RegularLeather = 101,
         SpinedLeather,
         HornedLeather,
         BarbedLeather,
+        DaemonLeather,
+        PolarLeather,
+        DragonLeather,
+        DiamondLeather,
+        BloodLeather,
 
         RedScales = 201,
         YellowScales,
@@ -27,14 +39,21 @@ namespace Server.Items
         GreenScales,
         WhiteScales,
         BlueScales,
+        CopperScales,
+        SilverScales,
+        GoldScales,
 
         RegularWood = 301,
         OakWood,
         AshWood,
         YewWood,
         Heartwood,
+        Frostwood,
+        BlueBarkwood,
+        BlackBarkWood,
         Bloodwood,
-        Frostwood
+        SwampWood,
+        ElvenWood
     }
 
     public enum CraftResourceType
@@ -165,10 +184,14 @@ namespace Server.Items
         }
 
         public static readonly CraftAttributeInfo Blank;
-        public static readonly CraftAttributeInfo DullCopper, ShadowIron, Copper, Bronze, Golden, Agapite, Verite, Valorite;
-        public static readonly CraftAttributeInfo Spined, Horned, Barbed;
-        public static readonly CraftAttributeInfo RedScales, YellowScales, BlackScales, GreenScales, WhiteScales, BlueScales;
-        public static readonly CraftAttributeInfo OakWood, AshWood, YewWood, Heartwood, Bloodwood, Frostwood;
+        public static readonly CraftAttributeInfo DullCopper, ShadowIron, Copper, Bronze, Golden, Agapite, Verite, Valorite,
+            Blaze, Ice, Toxic, Electrum, Moonstone, Bloodstone, Platinum;
+        public static readonly CraftAttributeInfo Spined, Horned, Barbed,
+            Daemon, Polar, Dragon, Diamond, Blood;
+        public static readonly CraftAttributeInfo RedScales, YellowScales, BlackScales, GreenScales, WhiteScales, BlueScales,
+            CopperScales, SilverScales, GoldScales;
+        public static readonly CraftAttributeInfo OakWood, AshWood, YewWood, Heartwood, Frostwood,
+            BlueBarkWood, BlackBarkWood, Bloodwood, SwampWood, ElvenWood;
 
         static CraftAttributeInfo()
         {
@@ -350,6 +373,103 @@ namespace Server.Items
                 valorite.RunicMaxIntensity = 100;
             }
 
+            CraftAttributeInfo blaze = Blaze = new CraftAttributeInfo();
+
+            blaze.ArmorPhysicalResist = 6;
+            blaze.ArmorFireResist = 10;
+            blaze.ArmorDurability = 110;
+            blaze.WeaponFireDamage = 35;
+            blaze.RunicMinAttributes = 5;
+            blaze.RunicMaxAttributes = 6;
+            blaze.RunicMinIntensity = 85;
+            blaze.RunicMaxIntensity = 105;
+
+            CraftAttributeInfo ice = Ice = new CraftAttributeInfo();
+
+            ice.ArmorPhysicalResist = 6;
+            ice.ArmorColdResist = 10;
+            ice.ArmorDurability = 120;
+            ice.WeaponColdDamage = 35;
+            ice.RunicMinAttributes = 5;
+            ice.RunicMaxAttributes = 6;
+            ice.RunicMinIntensity = 90;
+            ice.RunicMaxIntensity = 110;
+
+            CraftAttributeInfo toxic = Toxic = new CraftAttributeInfo();
+
+            toxic.ArmorPhysicalResist = 6;
+            toxic.ArmorPoisonResist = 10;
+            toxic.ArmorDurability = 130;
+            toxic.WeaponPoisonDamage = 35;
+            toxic.RunicMinAttributes = 6;
+            toxic.RunicMaxAttributes = 7;
+            toxic.RunicMinIntensity = 95;
+            toxic.RunicMaxIntensity = 115;
+
+            CraftAttributeInfo electrum = Electrum = new CraftAttributeInfo();
+
+            electrum.ArmorPhysicalResist = 10;
+            electrum.ArmorEnergyResist = 10;
+            electrum.ArmorDurability = 140;
+            electrum.WeaponEnergyDamage = 35;
+            electrum.RunicMinAttributes = 6;
+            electrum.RunicMaxAttributes = 7;
+            electrum.RunicMinIntensity = 100;
+            electrum.RunicMaxIntensity = 120;
+
+            CraftAttributeInfo moonstone = Moonstone = new CraftAttributeInfo();
+
+            moonstone.ArmorPhysicalResist = 10;
+            moonstone.ArmorFireResist = 10;
+            moonstone.ArmorColdResist = 10;
+            moonstone.ArmorPoisonResist = 10;
+            moonstone.ArmorEnergyResist = 10;
+            moonstone.ArmorDurability = 150;
+            moonstone.WeaponFireDamage = 25;
+            moonstone.WeaponColdDamage = 25;
+            moonstone.WeaponPoisonDamage = 25;
+            moonstone.WeaponEnergyDamage = 25;
+            moonstone.RunicMinAttributes = 7;
+            moonstone.RunicMaxAttributes = 8;
+            moonstone.RunicMinIntensity = 110;
+            moonstone.RunicMaxIntensity = 130;
+
+            CraftAttributeInfo bloodstone = Bloodstone = new CraftAttributeInfo();
+
+            bloodstone.ArmorPhysicalResist = 10;
+            bloodstone.ArmorFireResist = 10;
+            bloodstone.ArmorColdResist = 10;
+            bloodstone.ArmorPoisonResist = 10;
+            bloodstone.ArmorEnergyResist = 10;
+            bloodstone.ArmorDurability = 160;
+            bloodstone.WeaponFireDamage = 25;
+            bloodstone.WeaponColdDamage = 25;
+            bloodstone.WeaponPoisonDamage = 25;
+            bloodstone.WeaponEnergyDamage = 25;
+            bloodstone.RunicMinAttributes = 7;
+            bloodstone.RunicMaxAttributes = 9;
+            bloodstone.RunicMinIntensity = 115;
+            bloodstone.RunicMaxIntensity = 135;
+
+            CraftAttributeInfo platinum = Platinum = new CraftAttributeInfo();
+
+            platinum.ArmorPhysicalResist = 15;
+            platinum.ArmorFireResist = 15;
+            platinum.ArmorColdResist = 15;
+            platinum.ArmorPoisonResist = 15;
+            platinum.ArmorEnergyResist = 15;
+            platinum.ArmorDurability = 170;
+            platinum.WeaponFireDamage = 30;
+            platinum.WeaponColdDamage = 30;
+            platinum.WeaponPoisonDamage = 30;
+            platinum.WeaponEnergyDamage = 30;
+            platinum.RunicMinAttributes = 8;
+            platinum.RunicMaxAttributes = 10;
+            platinum.RunicMinIntensity = 120;
+            platinum.RunicMaxIntensity = 140;
+
+
+
             CraftAttributeInfo spined = Spined = new CraftAttributeInfo();
 
             spined.ArmorPhysicalResist = 9;
@@ -408,6 +528,63 @@ namespace Server.Items
                 barbed.RunicMaxIntensity = 100;
             }
 
+            CraftAttributeInfo daemon = Daemon = new CraftAttributeInfo();
+
+            daemon.ArmorPhysicalResist = 4;
+            daemon.ArmorFireResist = 6;
+            daemon.ArmorDurability = 100;
+            daemon.RunicMinAttributes = 5;
+            daemon.RunicMaxAttributes = 6;
+            daemon.RunicMinIntensity = 55;
+            daemon.RunicMaxIntensity = 100;
+
+            CraftAttributeInfo polar = Polar = new CraftAttributeInfo();
+
+            polar.ArmorPhysicalResist = 4;
+            polar.ArmorColdResist = 6;
+            polar.ArmorDurability = 100;
+            polar.RunicMinAttributes = 5;
+            polar.RunicMaxAttributes = 6;
+            polar.RunicMinIntensity = 60;
+            polar.RunicMaxIntensity = 100;
+
+            CraftAttributeInfo dragon = Dragon = new CraftAttributeInfo();
+
+            dragon.ArmorPhysicalResist = 4;
+            dragon.ArmorEnergyResist = 6;
+            dragon.ArmorDurability = 100;
+            dragon.RunicMinAttributes = 6;
+            dragon.RunicMaxAttributes = 7;
+            dragon.RunicMinIntensity = 70;
+            dragon.RunicMaxIntensity = 100;
+
+            CraftAttributeInfo diamond = Diamond = new CraftAttributeInfo();
+
+            diamond.ArmorPhysicalResist = 2;
+            diamond.ArmorFireResist = 5;
+            diamond.ArmorColdResist = 5;
+            diamond.ArmorPoisonResist = 5;
+            diamond.ArmorEnergyResist = 5;
+            diamond.ArmorDurability = 100;
+            diamond.RunicMinAttributes = 7;
+            diamond.RunicMaxAttributes = 8;
+            diamond.RunicMinIntensity = 80;
+            diamond.RunicMaxIntensity = 100;
+
+            CraftAttributeInfo blood = Blood = new CraftAttributeInfo();
+
+            blood.ArmorPhysicalResist = 3;
+            blood.ArmorFireResist = 5;
+            blood.ArmorColdResist = 5;
+            blood.ArmorPoisonResist = 5;
+            blood.ArmorEnergyResist = 5;
+            blood.ArmorDurability = 100;
+            blood.RunicMinAttributes = 7;
+            blood.RunicMaxAttributes = 8;
+            blood.RunicMinIntensity = 90;
+            blood.RunicMaxIntensity = 100;
+
+
             CraftAttributeInfo red = RedScales = new CraftAttributeInfo();
             red.ArmorPhysicalResist = 1;
             red.ArmorFireResist = 11;
@@ -455,6 +632,28 @@ namespace Server.Items
             blue.ArmorColdResist = 1;
             blue.ArmorPoisonResist = -3;
             blue.ArmorEnergyResist = 11;
+
+            CraftAttributeInfo coppers = CopperScales = new CraftAttributeInfo();
+
+            coppers.ArmorPoisonResist = 10;
+            coppers.ArmorPhysicalResist = 10;
+            coppers.ArmorEnergyResist = 10;
+
+            CraftAttributeInfo silver = SilverScales = new CraftAttributeInfo();
+
+            silver.ArmorColdResist = 10;
+            silver.ArmorEnergyResist = 10;
+            silver.ArmorPhysicalResist = 10;
+
+            CraftAttributeInfo gold = GoldScales = new CraftAttributeInfo();
+
+            gold.ArmorPoisonResist = 10;
+            gold.ArmorColdResist = 10;
+            gold.ArmorPhysicalResist = 10;
+            gold.ArmorEnergyResist = 10;
+            gold.ArmorFireResist = 10;
+
+
 
             #region Mondain's Legacy
             CraftAttributeInfo oak = OakWood = new CraftAttributeInfo();
@@ -591,6 +790,66 @@ namespace Server.Items
             frostwood.WeaponDamage = 12;
 
             frostwood.OtherSpellChanneling = 1;
+
+            CraftAttributeInfo bluebark = BlueBarkWood = new CraftAttributeInfo();
+
+            bluebark.WeaponDurability = 200;
+            bluebark.WeaponLowerRequirements = 50;
+            bluebark.WeaponColdDamage = 40;
+            bluebark.RunicMinAttributes = 4;
+            bluebark.RunicMaxAttributes = 5;
+            bluebark.RunicMinIntensity = 50;
+            bluebark.RunicMaxIntensity = 80;
+
+            CraftAttributeInfo blackbark = BlackBarkWood = new CraftAttributeInfo();
+
+            blackbark.WeaponDurability = 100;
+            blackbark.WeaponLowerRequirements = 50;
+            blackbark.WeaponEnergyDamage = 10;
+            blackbark.RunicMinAttributes = 5;
+            blackbark.RunicMaxAttributes = 6;
+            blackbark.RunicMinIntensity = 60;
+            blackbark.RunicMaxIntensity = 90;
+
+            CraftAttributeInfo bloodleaf = Bloodwood = new CraftAttributeInfo();
+
+            bloodleaf.ArmorPhysicalResist = 3;
+            bloodleaf.ArmorFireResist = 8;
+            bloodleaf.ArmorColdResist = 1;
+            bloodleaf.ArmorPoisonResist = 3;
+            bloodleaf.ArmorEnergyResist = 3;
+            bloodleaf.ArmorRegenHits = 2;
+            bloodleaf.ShieldFireResist = 3;
+            bloodleaf.WeaponRegenHits = 2;
+            bloodleaf.WeaponHitLifeLeech = 16;
+            bloodleaf.WeaponDurability = 100;
+            bloodleaf.WeaponLowerRequirements = 50;
+            bloodleaf.WeaponFireDamage = 100;
+            bloodleaf.RunicMinAttributes = 6;
+            bloodleaf.RunicMaxAttributes = 7;
+            bloodleaf.RunicMinIntensity = 70;
+            bloodleaf.RunicMaxIntensity = 100;
+
+            CraftAttributeInfo swamp = SwampWood = new CraftAttributeInfo();
+
+            swamp.WeaponDurability = 100;
+            swamp.WeaponLowerRequirements = 50;
+            swamp.WeaponPoisonDamage = 100;
+            swamp.RunicMinAttributes = 7;
+            swamp.RunicMaxAttributes = 8;
+            swamp.RunicMinIntensity = 80;
+            swamp.RunicMaxIntensity = 100;
+
+            CraftAttributeInfo elven = ElvenWood = new CraftAttributeInfo();
+
+            elven.WeaponDurability = 100;
+            elven.WeaponLowerRequirements = 50;
+            elven.WeaponEnergyDamage = 100;
+            elven.RunicMinAttributes = 7;
+            elven.RunicMaxAttributes = 8;
+            elven.RunicMinIntensity = 90;
+            elven.RunicMaxIntensity = 100;
+
             #endregion
         }
     }
@@ -665,7 +924,7 @@ namespace Server.Items
     {
         private static readonly CraftResourceInfo[] m_MetalInfo = new CraftResourceInfo[]
         {
-            new CraftResourceInfo(0x000, 1053109, "Iron", CraftAttributeInfo.Blank, CraftResource.Iron, typeof(IronIngot), typeof(IronOre), typeof(Granite)),
+            new CraftResourceInfo(0x000, 1053109, "Iron", CraftAttributeInfo.Blank, CraftResource.Iron, typeof(IronIngot), typeof(BlazeOre), typeof(Granite)),
             new CraftResourceInfo(0x973, 1053108, "Dull Copper",	CraftAttributeInfo.DullCopper,	CraftResource.DullCopper, typeof(DullCopperIngot),	typeof(DullCopperOre),	typeof(DullCopperGranite)),
             new CraftResourceInfo(0x966, 1053107, "Shadow Iron",	CraftAttributeInfo.ShadowIron,	CraftResource.ShadowIron, typeof(ShadowIronIngot),	typeof(ShadowIronOre),	typeof(ShadowIronGranite)),
             new CraftResourceInfo(0x96D, 1053106, "Copper", CraftAttributeInfo.Copper, CraftResource.Copper, typeof(CopperIngot), typeof(CopperOre), typeof(CopperGranite)),
@@ -674,6 +933,13 @@ namespace Server.Items
             new CraftResourceInfo(0x979, 1053103, "Agapite", CraftAttributeInfo.Agapite, CraftResource.Agapite, typeof(AgapiteIngot), typeof(AgapiteOre), typeof(AgapiteGranite)),
             new CraftResourceInfo(0x89F, 1053102, "Verite", CraftAttributeInfo.Verite, CraftResource.Verite, typeof(VeriteIngot), typeof(VeriteOre), typeof(VeriteGranite)),
             new CraftResourceInfo(0x8AB, 1053101, "Valorite", CraftAttributeInfo.Valorite,	CraftResource.Valorite, typeof(ValoriteIngot),	typeof(ValoriteOre), typeof(ValoriteGranite)),
+            new CraftResourceInfo( 1161, 0, "Blaze",                CraftAttributeInfo.Blaze,       CraftResource.Blaze,            typeof( BlazeIngot ),       typeof( BlazeOre ),         typeof( BlazeGranite ) ),
+                new CraftResourceInfo( 1152, 0, "Ice",                  CraftAttributeInfo.Ice,         CraftResource.Ice,              typeof( IceIngot ),         typeof( IceOre ),           typeof( IceGranite ) ),
+                new CraftResourceInfo( 1272, 0, "Toxic",                CraftAttributeInfo.Toxic,       CraftResource.Toxic,            typeof( ToxicIngot ),       typeof( ToxicOre ),         typeof( ToxicGranite ) ),
+                new CraftResourceInfo( 1278, 0, "Electrum",             CraftAttributeInfo.Electrum,    CraftResource.Electrum,         typeof( ElectrumIngot ),    typeof( ElectrumOre ),      typeof( ElectrumGranite ) ),
+                new CraftResourceInfo( 1156, 0, "Moonstone",            CraftAttributeInfo.Moonstone,   CraftResource.Moonstone,        typeof( MoonstoneIngot ),   typeof( MoonstoneOre ),     typeof( MoonstoneGranite ) ),
+                new CraftResourceInfo( 1157, 0, "Bloodstone",           CraftAttributeInfo.Bloodstone,  CraftResource.Bloodstone,       typeof( BloodstoneIngot ),  typeof( BloodstoneOre ),    typeof( BloodstoneGranite ) ),
+                new CraftResourceInfo( 1153, 0, "Platinum",             CraftAttributeInfo.Platinum,    CraftResource.Platinum,         typeof( PlatinumIngot ),    typeof( PlatinumOre ),      typeof( PlatinumGranite ) ),
         };
 
         private static readonly CraftResourceInfo[] m_ScaleInfo = new CraftResourceInfo[]
@@ -683,7 +949,10 @@ namespace Server.Items
             new CraftResourceInfo(0x455, 1053131, "Black Scales",	CraftAttributeInfo.BlackScales, CraftResource.BlackScales, typeof(BlackScales)),
             new CraftResourceInfo(0x851, 1053132, "Green Scales",	CraftAttributeInfo.GreenScales, CraftResource.GreenScales, typeof(GreenScales)),
             new CraftResourceInfo(0x8FD, 1053133, "White Scales",	CraftAttributeInfo.WhiteScales, CraftResource.WhiteScales, typeof(WhiteScales)),
-            new CraftResourceInfo(0x8B0, 1053134, "Blue Scales",	CraftAttributeInfo.BlueScales, CraftResource.BlueScales, typeof(BlueScales))
+            new CraftResourceInfo(0x8B0, 1053134, "Blue Scales",	CraftAttributeInfo.BlueScales, CraftResource.BlueScales, typeof(BlueScales)),
+                new CraftResourceInfo( 0x96D, 0, "Copper Scales",       CraftAttributeInfo.CopperScales,    CraftResource.CopperScales,     typeof( CopperScales ) ),
+                new CraftResourceInfo( 0x8FD, 0, "Silver Scales",       CraftAttributeInfo.SilverScales,    CraftResource.SilverScales,     typeof( SilverScales ) ),
+                new CraftResourceInfo( 0x8A5, 0, "Gold Scales",         CraftAttributeInfo.GoldScales,      CraftResource.GoldScales,       typeof( GoldScales ) )
         };
 
         private static readonly CraftResourceInfo[] m_LeatherInfo = new CraftResourceInfo[]
@@ -691,7 +960,12 @@ namespace Server.Items
             new CraftResourceInfo(0x000, 1049353, "Normal", CraftAttributeInfo.Blank, CraftResource.RegularLeather,	typeof(Leather), typeof(Hides)),
             new CraftResourceInfo(0x283, 1049354, "Spined", CraftAttributeInfo.Spined, CraftResource.SpinedLeather,	typeof(SpinedLeather),	typeof(SpinedHides)),
             new CraftResourceInfo(0x227, 1049355, "Horned", CraftAttributeInfo.Horned, CraftResource.HornedLeather,	typeof(HornedLeather),	typeof(HornedHides)),
-            new CraftResourceInfo(0x1C1, 1049356, "Barbed", CraftAttributeInfo.Barbed, CraftResource.BarbedLeather,	typeof(BarbedLeather),	typeof(BarbedHides))
+            new CraftResourceInfo(0x1C1, 1049356, "Barbed", CraftAttributeInfo.Barbed, CraftResource.BarbedLeather,	typeof(BarbedLeather),	typeof(BarbedHides)),
+                new CraftResourceInfo( 1161, 0, "Daemon Leather",               CraftAttributeInfo.Daemon,      CraftResource.DaemonLeather,    typeof( DaemonLeather ),    typeof( DaemonHides ) ),
+                new CraftResourceInfo( 1154, 0, "Polar Leather",                CraftAttributeInfo.Polar,       CraftResource.PolarLeather,     typeof( PolarLeather ),     typeof( PolarHides ) ),
+                new CraftResourceInfo( 1175, 0, "Dragon Leather",               CraftAttributeInfo.Dragon,      CraftResource.DragonLeather,    typeof( DragonLeather ),    typeof( DragonHides ) ),
+                new CraftResourceInfo( 1266, 0, "Diamond Leather",              CraftAttributeInfo.Diamond,     CraftResource.DiamondLeather,   typeof( DiamondLeather ),   typeof( DiamondHides ) ),
+                new CraftResourceInfo( 2998, 0, "Blood Leather",                CraftAttributeInfo.Blood,       CraftResource.BloodLeather,     typeof( BloodLeather ),     typeof( BloodHides ) )
         };
 
         private static readonly CraftResourceInfo[] m_AOSLeatherInfo = new CraftResourceInfo[]
@@ -700,6 +974,11 @@ namespace Server.Items
             new CraftResourceInfo(0x8AC, 1049354, "Spined", CraftAttributeInfo.Spined, CraftResource.SpinedLeather,	typeof(SpinedLeather),	typeof(SpinedHides)),
             new CraftResourceInfo(0x845, 1049355, "Horned", CraftAttributeInfo.Horned, CraftResource.HornedLeather,	typeof(HornedLeather),	typeof(HornedHides)),
             new CraftResourceInfo(0x851, 1049356, "Barbed", CraftAttributeInfo.Barbed, CraftResource.BarbedLeather,	typeof(BarbedLeather),	typeof(BarbedHides)),
+                new CraftResourceInfo( 1161, 0, "Daemon Leather",           CraftAttributeInfo.Daemon,      CraftResource.DaemonLeather,    typeof( DaemonLeather ),    typeof( DaemonHides ) ),
+                new CraftResourceInfo( 1154, 0, "Polar Leather",            CraftAttributeInfo.Polar,       CraftResource.PolarLeather,     typeof( PolarLeather ),     typeof( PolarHides ) ),
+                new CraftResourceInfo( 1175, 0, "Dragon Leather",           CraftAttributeInfo.Dragon,      CraftResource.DragonLeather,    typeof( DragonLeather ),    typeof( DragonHides ) ),
+                new CraftResourceInfo( 1266, 0, "Diamond Leather",          CraftAttributeInfo.Diamond,     CraftResource.DiamondLeather,   typeof( DiamondLeather ),   typeof( DiamondHides ) ),
+                new CraftResourceInfo( 2998, 0, "Blood Leather",            CraftAttributeInfo.Blood,       CraftResource.BloodLeather,     typeof( BloodLeather ),     typeof( BloodHides ) )
         };
 
         private static readonly CraftResourceInfo[] m_WoodInfo = new CraftResourceInfo[]
@@ -710,7 +989,12 @@ namespace Server.Items
             new CraftResourceInfo(0x4A8, 1072535, "Yew", CraftAttributeInfo.YewWood, CraftResource.YewWood, typeof(YewLog), typeof(YewBoard)),
             new CraftResourceInfo(0x4A9, 1072536, "Heartwood", CraftAttributeInfo.Heartwood,	CraftResource.Heartwood,	typeof(HeartwoodLog),	typeof(HeartwoodBoard)),
             new CraftResourceInfo(0x4AA, 1072538, "Bloodwood", CraftAttributeInfo.Bloodwood,	CraftResource.Bloodwood,	typeof(BloodwoodLog),	typeof(BloodwoodBoard)),
-            new CraftResourceInfo(0x47F, 1072539, "Frostwood", CraftAttributeInfo.Frostwood,	CraftResource.Frostwood,	typeof(FrostwoodLog),	typeof(FrostwoodBoard))
+            new CraftResourceInfo(0x47F, 1072539, "Frostwood", CraftAttributeInfo.Frostwood,	CraftResource.Frostwood,	typeof(FrostwoodLog),	typeof(FrostwoodBoard)),
+                new CraftResourceInfo( 1366, 0, "BlueBark",             CraftAttributeInfo.BlueBarkWood,    CraftResource.BlueBarkwood,     typeof( BlueBarkLog ),  typeof( BlueBarkBoard ) ),
+                new CraftResourceInfo( 1175, 0, "BlackBark",            CraftAttributeInfo.BlackBarkWood,   CraftResource.BlackBarkWood,    typeof( BlackBarkLog ), typeof( BlackBarkBoard ) ),
+                new CraftResourceInfo( 2118, 0, "BloodLeaf",            CraftAttributeInfo.Bloodwood,   CraftResource.Bloodwood,    typeof( BloodLog ), typeof( BloodBoard ) ),
+                new CraftResourceInfo( 1286, 0, "Swamp",                CraftAttributeInfo.SwampWood,       CraftResource.SwampWood,        typeof( SwampLog ),     typeof( SwampBoard ) ),
+                new CraftResourceInfo( 1153, 0, "Elven",                CraftAttributeInfo.ElvenWood,       CraftResource.ElvenWood,        typeof( ElvenLog ),     typeof( ElvenBoard ) )
         };
 
         /// <summary>
@@ -880,6 +1164,17 @@ namespace Server.Items
                 return CraftResource.BarbedLeather;
             else if (info.Name.IndexOf("Leather") >= 0)
                 return CraftResource.RegularLeather;
+            else if (info.Name.IndexOf("Daemon") >= 0)
+                return CraftResource.DaemonLeather;
+            else if (info.Name.IndexOf("Polar") >= 0)
+                return CraftResource.PolarLeather;
+            else if (info.Name.IndexOf("Dragon") >= 0)
+                return CraftResource.DragonLeather;
+            else if (info.Name.IndexOf("Diamond") >= 0)
+                return CraftResource.DiamondLeather;
+            else if (info.Name.IndexOf("Blood") >= 0)
+                return CraftResource.BloodLeather;
+
 
             if (info.Level == 0)
                 return CraftResource.Iron;
@@ -899,6 +1194,20 @@ namespace Server.Items
                 return CraftResource.Verite;
             else if (info.Level == 8)
                 return CraftResource.Valorite;
+            else if (info.Level == 9)
+                return CraftResource.Blaze;
+            else if (info.Level == 10)
+                return CraftResource.Ice;
+            else if (info.Level == 11)
+                return CraftResource.Toxic;
+            else if (info.Level == 12)
+                return CraftResource.Electrum;
+            else if (info.Level == 13)
+                return CraftResource.Moonstone;
+            else if (info.Level == 14)
+                return CraftResource.Bloodstone;
+            else if (info.Level == 15)
+                return CraftResource.Platinum;
 
             return CraftResource.None;
         }
@@ -919,6 +1228,16 @@ namespace Server.Items
                     return CraftResource.HornedLeather;
                 else if (info.Level == 3)
                     return CraftResource.BarbedLeather;
+                else if (info.Level == 4)
+                    return CraftResource.DaemonLeather;
+                else if (info.Level == 5)
+                    return CraftResource.PolarLeather;
+                else if (info.Level == 6)
+                    return CraftResource.DragonLeather;
+                else if (info.Level == 7)
+                    return CraftResource.DiamondLeather;
+                else if (info.Level == 8)
+                    return CraftResource.BloodLeather;
 
                 return CraftResource.None;
             }
@@ -940,6 +1259,13 @@ namespace Server.Items
         public static readonly OreInfo Agapite = new OreInfo(6, 0x979, "Agapite");
         public static readonly OreInfo Verite = new OreInfo(7, 0x89F, "Verite");
         public static readonly OreInfo Valorite = new OreInfo(8, 0x8AB, "Valorite");
+        public static readonly OreInfo Blaze = new OreInfo(9, 0x489, "Blaze");
+        public static readonly OreInfo Ice = new OreInfo(10, 1152, "Ice");
+        public static readonly OreInfo Toxic = new OreInfo(11, 1272, "Toxic");
+        public static readonly OreInfo Electrum = new OreInfo(12, 1278, "Electrum");
+        public static readonly OreInfo Moonstone = new OreInfo(13, 1156, "Moonstone");
+        public static readonly OreInfo Bloodstone = new OreInfo(14, 1157, "Bloodstone");
+        public static readonly OreInfo Platinum = new OreInfo(15, 1153, "Platinum");
 
         private readonly int m_Level;
         private readonly int m_Hue;

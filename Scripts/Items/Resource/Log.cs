@@ -412,4 +412,217 @@ namespace Server.Items
             return true;
         }
     }
+
+    public class BlueBarkLog : BaseLog
+    {
+        [Constructable]
+        public BlueBarkLog()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BlueBarkLog(int amount)
+            : base(CraftResource.BlueBarkwood, amount)
+        {
+        }
+
+        public BlueBarkLog(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+
+        public override bool Axe(Mobile from, BaseAxe axe)
+        {
+            if (!TryCreateBoards(from, 95, new BlueBarkBoard()))
+                return false;
+
+            return true;
+        }
+    }
+
+    public class BlackBarkLog : BaseLog
+    {
+        [Constructable]
+        public BlackBarkLog()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BlackBarkLog(int amount)
+            : base(CraftResource.BlackBarkWood, amount)
+        {
+        }
+
+        public BlackBarkLog(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+
+        public override bool Axe(Mobile from, BaseAxe axe)
+        {
+            if (!TryCreateBoards(from, 95, new BlackBarkBoard()))
+                return false;
+
+            return true;
+        }
+    }
+
+    public class BloodLog : BaseLog
+    {
+        [Constructable]
+        public BloodLog()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BloodLog(int amount)
+            : base(CraftResource.Bloodwood, amount)
+        {
+        }
+
+        public BloodLog(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+
+        public override bool Axe(Mobile from, BaseAxe axe)
+        {
+            if (!TryCreateBoards(from, 95, new BloodBoard()))
+                return false;
+
+            return true;
+        }
+    }
+
+    public class SwampLog : BaseLog
+    {
+        [Constructable]
+        public SwampLog()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public SwampLog(int amount)
+            : base(CraftResource.SwampWood, amount)
+        {
+        }
+
+        public SwampLog(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+
+        public override bool Axe(Mobile from, BaseAxe axe)
+        {
+            if (!TryCreateBoards(from, 95, new SwampBoard()))
+                return false;
+
+            return true;
+        }
+    }
+
+    public class ElvenLog : BaseLog
+    {
+        [Constructable]
+        public ElvenLog()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public ElvenLog(int amount)
+            : base(CraftResource.ElvenWood, amount)
+        {
+        }
+
+        public ElvenLog(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+
+        public override bool Axe(Mobile from, BaseAxe axe)
+        {
+            if (!TryCreateBoards(from, 95, new ElvenBoard()))
+                return false;
+
+            return true;
+        }
+    }
+
+
+
 }

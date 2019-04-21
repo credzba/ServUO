@@ -1,0 +1,43 @@
+using System; 
+using Server.Spells;
+using Server.Items; 
+using Server.Targeting; 
+
+namespace Server.Items 
+{ 
+   	public class WrathFootwear: WrathItem 
+   	{ 
+		[Constructable]
+		public WrathFootwear() : base( Utility.RandomList( 5903, 5905, 5899, 5901 ) )
+		{
+			Weight = 10.0;
+
+			if ( ItemID == 5903 )
+				Name = "Wrath Boots";
+			if ( ItemID == 5905 )
+				Name = "Wrath Thigh Boots";
+			if ( ItemID == 5899 )
+				Name = "Wrath Shoes";
+			if ( ItemID == 5901 )
+				Name = "Wrath Sandles";
+
+			Layer = Layer.Shoes;
+		}
+
+            	public WrathFootwear( Serial serial ) : base ( serial ) 
+            	{             
+           	} 
+
+           	public override void Serialize( GenericWriter writer ) 
+           	{ 
+              		base.Serialize( writer ); 
+              		writer.Write( (int) 0 ); 
+           	} 
+            
+           	public override void Deserialize( GenericReader reader ) 
+           	{ 
+              		base.Deserialize( reader ); 
+              		int version = reader.ReadInt(); 
+           	} 
+        } 
+} 

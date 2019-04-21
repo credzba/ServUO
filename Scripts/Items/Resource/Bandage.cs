@@ -70,7 +70,15 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 
-		public override void OnDoubleClick(Mobile from)
+        public static void BandSelfCommandCall(Mobile from, Item m_Bandage)
+        {
+            from.RevealingAction();
+
+            if (BandageContext.BeginHeal(from, from) != null)
+                m_Bandage.Consume();
+        }
+
+        public override void OnDoubleClick(Mobile from)
 		{
 			if (from.InRange(GetWorldLocation(), Range))
 			{
@@ -664,6 +672,10 @@ namespace Server.Items
             else if (!patient.Alive && (patient.Map == null || !patient.Map.CanFit(patient.Location, 16, false, false)))
             {
                 healer.SendLocalizedMessage(501042); // Target cannot be resurrected at that location.
+            }
+            else if (GetContext(healer) != null)
+            {
+                healer.SendMessage("You are already busy with a bandage.");
             }
             else if (healer.CanBeBeneficial(patient, true, true))
             {

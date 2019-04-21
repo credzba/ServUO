@@ -358,4 +358,175 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class BlueBarkBoard : BaseWoodBoard
+    {
+        [Constructable]
+        public BlueBarkBoard()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BlueBarkBoard(int amount)
+            : base(CraftResource.BlueBarkwood, amount)
+        {
+        }
+
+        public BlueBarkBoard(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class BlackBarkBoard : BaseWoodBoard
+    {
+        [Constructable]
+        public BlackBarkBoard()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BlackBarkBoard(int amount)
+            : base(CraftResource.BlackBarkWood, amount)
+        {
+        }
+
+        public BlackBarkBoard(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class BloodBoard : BaseWoodBoard
+    {
+        [Constructable]
+        public BloodBoard()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BloodBoard(int amount)
+            : base(CraftResource.Bloodwood, amount)
+        {
+        }
+
+        public BloodBoard(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class SwampBoard : BaseWoodBoard
+    {
+        [Constructable]
+        public SwampBoard()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public SwampBoard(int amount)
+            : base(CraftResource.SwampWood, amount)
+        {
+        }
+
+        public SwampBoard(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class ElvenBoard : BaseWoodBoard
+    {
+        [Constructable]
+        public ElvenBoard()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public ElvenBoard(int amount)
+            : base(CraftResource.ElvenWood, amount)
+        {
+        }
+
+        public ElvenBoard(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
 }

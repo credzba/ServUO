@@ -1,0 +1,285 @@
+using System; 
+using System.Collections;
+using Server;
+using Server.Spells;
+using Server.Items; 
+using Server.Targeting; 
+using Server.ContextMenus; 
+using Server.Gumps; 
+using Server.Network; 
+using Server.Mobiles; 
+
+namespace Server.Items 
+{ 
+   	public class RuneStaff: Item 
+   	{ 
+		private Mobile m_Owner;
+		private ArrayList m_Runes = new ArrayList();
+		private int m_Power;
+		private TimeSpan m_NextGain;
+
+		[CommandProperty( AccessLevel.GameMaster )]
+		public Mobile Owner
+		{ 
+			get{ return m_Owner; } 
+			set
+			{
+				m_Owner = value;
+				BlessedFor = value;
+			}
+		}
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int Power{ get{ return m_Power; } set{ m_Power = value; } }
+
+		public ArrayList Runes{ get{ return m_Runes; } set{ m_Runes = value; } }
+		public TimeSpan NextGain{ get{ return m_NextGain; } set{ m_NextGain = value; } }
+
+		[Constructable]
+		public RuneStaff() : base( 5112 )
+		{
+			Weight = 0.0;
+			Name = "Rune Staff";
+			Layer = Layer.TwoHanded;
+		}
+
+		public override void OnDoubleClick( Mobile from )
+		{
+			from.Target = new AddRuneRSTarget( from, this );
+			from.SendMessage( "Target a rune to remove or add to the staff." );
+		}
+
+		public override void GetProperties( ObjectPropertyList list )
+		{
+			base.GetProperties( list );
+
+			list.Add( 1060658, "Runes\t{0}", Runes.Count );
+			list.Add( 1060659, "Power\t{0}", Power );
+		}
+
+		public override bool OnEquip( Mobile from )
+		{
+			if ( Owner == null )
+			{
+				from.SendMessage( "You are now the owner of this rune staff." );
+				NextGain = TimeSpan.FromDays( 1.0 );
+				Owner = from;
+			}
+			if ( Owner != from )
+			{
+				from.SendMessage( "You do not own this!" );
+				return false;
+			}
+			else if ( from is PlayerMobile )
+			{
+				from.SendMessage( "You feel a power flow through you." );
+				NextGain += ((PlayerMobile)from).GameTime;
+				new RuneStaffTimer( ((PlayerMobile)from), this ).Start();
+				return base.OnEquip( from );
+			}
+			else
+				return base.OnEquip( from );
+		}
+
+            	public RuneStaff( Serial serial ) : base ( serial ) 
+            	{             
+           	} 
+
+           	public override void Serialize( GenericWriter writer ) 
+           	{ 
+              		base.Serialize( writer ); 
+              		writer.Write( (int) 0 ); 
+              		writer.Write( m_Owner ); 
+              		writer.Write( m_NextGain ); 
+              		writer.Write( (int)m_Power ); 
+
+			writer.Write( (int)m_Runes.Count );
+			for ( int i = 0; i < m_Runes.Count; ++i )
+				writer.Write( (SpellRune)m_Runes[i] );
+           	} 
+            
+           	public override void Deserialize( GenericReader reader ) 
+           	{ 
+              		base.Deserialize( reader ); 
+              		int version = reader.ReadInt(); 
+              		m_Owner = reader.ReadMobile(); 
+              		m_NextGain = reader.ReadTimeSpan(); 
+              		m_Power = reader.ReadInt(); 
+
+			int size1 = reader.ReadInt();
+			for ( int i = 0; i < size1; ++i )
+			{
+				m_Runes.Add( reader.ReadItem() as SpellRune );
+			}
+           	} 
+		public override void GetContextMenuEntries( Mobile from, ArrayList list )
+		{
+			if ( from.Alive && IsChildOf( from ) )
+				list.Add( new InternalTransferEntry( from, this ) ); // Transfer
+		}
+		private class InternalTransferEntry : ContextMenuEntry
+		{
+			private Mobile m_From;
+			private RuneStaff m_RS;
+
+			public InternalTransferEntry( Mobile from, RuneStaff rs ) : base( 6113, 14 )
+			{
+				m_From = from;
+				m_RS = rs;
+			}
+
+			public override void OnClick()
+			{
+				m_From.SendMessage( "Target the person you wish to transfer this rune staff to." );
+				m_From.Target = new TransferRSTarget( m_From, m_RS );
+			}
+		}
+        } 
+	public class RuneStaffTimer : Timer
+	{
+		private PlayerMobile m_From;
+		private RuneStaff m_Staff;
+
+		public RuneStaffTimer( PlayerMobile from, RuneStaff staff ) : base( TimeSpan.FromSeconds( 0.1 ), TimeSpan.FromSeconds( 0.1 ) )
+		{
+			m_From = from;
+			m_Staff = staff;
+		}
+
+		protected override void OnTick()
+		{
+			if ( m_Staff.Parent != m_From )
+			{
+				m_Staff.NextGain -= m_From.GameTime;
+				Stop();
+			}
+
+			if ( m_From.GameTime > m_Staff.NextGain )
+			{
+				m_Staff.Power += 1;
+				m_Staff.NextGain = m_From.GameTime + TimeSpan.FromDays( 1.0 );
+			}
+		}
+	}
+	public class TransferRSGump : Gump
+	{
+		private Mobile m_From;
+		private Mobile m_Target;
+		private RuneStaff m_RS;
+
+		public TransferRSGump( Mobile from, Mobile target, RuneStaff rs ) : base( 25, 50 )
+		{
+			m_From = from;
+			m_Target = target;
+			m_RS = rs;
+
+			AddPage( 0 );
+
+			AddBackground( 0, 0, 420, 150, 5054 );
+
+			AddImageTiled( 10, 10, 400, 130, 2624 );
+			AddAlphaRegion( 10, 10, 400, 130 );
+
+			AddLabel( 30, 30, 1152, m_From.Name +" would like to transfer a rune staff to you." );
+
+			AddButton( 100, 90, 4005, 4007, 1, GumpButtonType.Reply, 0 );
+			AddLabel( 130, 90, 1152, "Accept" );
+			AddButton( 100, 115, 4005, 4007, 0, GumpButtonType.Reply, 0 );
+			AddLabel( 130, 115, 1152, "Decline" );
+		}
+
+		public override void OnResponse( NetState state, RelayInfo info )
+		{
+			if ( info.ButtonID == 0 )
+			{
+				m_From.SendMessage( m_Target.Name +" has declined your trasnfer of the rune staff." );
+				m_Target.SendMessage( "You have declined "+ m_From.Name +"'s trasnfer of their rune staff." );
+			}
+			if ( info.ButtonID == 1 )
+			{
+				m_From.SendMessage( m_Target.Name +" has accepted your trasnfer of the rune staff." );
+				m_Target.SendMessage( "You have accepted "+ m_From.Name +"'s trasnfer of their rune staff." );
+
+				m_Target.AddToBackpack( m_RS );
+				m_RS.Owner = m_Target;
+			}
+		}
+	}
+	public class TransferRSTarget : Target
+	{
+		private Mobile m_From;
+		private RuneStaff m_RS;
+
+		public TransferRSTarget( Mobile from, RuneStaff rs ) : base( 0, false, TargetFlags.None )
+		{
+			m_RS = rs;
+			m_From = from;
+		}
+
+		protected override void OnTarget( Mobile from, object o )
+		{
+			if ( o is PlayerMobile )
+			{
+				PlayerMobile target = (PlayerMobile)o;
+
+				target.SendGump( new TransferRSGump( m_From, target, m_RS ) );
+				target.SendMessage( m_From.Name +" would like to trasfer a wrath item to you." );
+			}
+			else
+				from.SendMessage( "That target is invalid." );
+		}
+	}
+	public class AddRuneRSTarget : Target
+	{
+		private Mobile m_From;
+		private RuneStaff m_RS;
+
+		public AddRuneRSTarget( Mobile from, RuneStaff rs ) : base( 14, false, TargetFlags.None )
+		{
+			m_RS = rs;
+			m_From = from;
+		}
+
+		protected override void OnTarget( Mobile from, object o )
+		{
+			if ( o is SpellRune )
+			{
+				SpellRune rune = (SpellRune)o;
+
+				if ( m_RS.Runes.Contains( rune ) )
+				{
+					m_RS.Runes.Remove( rune );
+					from.SendMessage( "You remove the rune from the staff." );
+				}
+				else
+				{
+					if ( rune.Owner == from )
+					{
+						m_RS.Runes.Add( rune );
+						from.SendMessage( "You add the rune to the staff." );
+
+						if ( rune.Type == RuneType.Fire )
+							from.FixedParticles( 14089, 10, 30, 5052, 0, 0, EffectLayer.LeftFoot );
+						else if ( rune.Type == RuneType.Water )
+							from.FixedParticles( 0x3779, 1, 46, 9502, 5, 3, EffectLayer.Waist );
+						else if ( rune.Type == RuneType.Wind )
+							from.FixedParticles( 0x376A, 1, 62, 9923, 3, 3, EffectLayer.Waist );
+						else if ( rune.Type == RuneType.Earth )
+							from.FixedParticles( 14154, 10, 30, 5052, 0, 0, EffectLayer.LeftFoot );
+						else if ( rune.Type == RuneType.Spirit )
+							from.FixedParticles( 0x37C4, 10, 30, 5052, 0, 0, EffectLayer.LeftFoot );
+						else if ( rune.Type == RuneType.Lightning )
+							from.BoltEffect(0);
+						else if ( rune.Type == RuneType.Toxic )
+							from.FixedParticles( 4418, 10, 30, 5052, 0, 0, EffectLayer.LeftFoot );
+						else if ( rune.Type == RuneType.Ice )
+							from.FixedParticles( 14201, 10, 30, 5052, 0, 0, EffectLayer.LeftFoot );
+						else if ( rune.Type == RuneType.Void )
+							from.FixedParticles( 14217, 10, 30, 5052, 0, 0, EffectLayer.LeftFoot );
+					}
+				}
+			}
+			else
+				from.SendMessage( "That target is invalid." );
+		}
+	}
+} 

@@ -541,7 +541,7 @@ namespace Server.Engines.Quests
                 {
                     case 0:
                         if (Utility.RandomBool())
-                            hold.DropItem(new IronOre(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new BlazeOre(Utility.RandomMinMax(40, 50)));
                         else
                             hold.DropItem(new IronIngot(Utility.RandomMinMax(40, 50)));
                         break;

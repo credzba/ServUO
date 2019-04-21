@@ -1,0 +1,59 @@
+using System; 
+using Server.Spells;
+using Server.Items; 
+using Server.Targeting; 
+
+namespace Server.Items 
+{ 
+   	public class WrathHats: WrathItem 
+   	{ 
+		[Constructable]
+		public WrathHats() : base( Utility.RandomList( 5907, 5908, 5909, 5910, 5911, 5912, 5913, 5914, 5915, 5916, 5440, 5443 ) )
+		{
+			Weight = 10.0;
+
+			if ( ItemID == 5907 )
+				Name = "Wrath Floppy Hat";
+			if ( ItemID == 5908 )
+				Name = "Wrath Wide-Brim Hate";
+			if ( ItemID == 5909 )
+				Name = "Wrath Cap";
+			if ( ItemID == 5910 )
+				Name = "Wrath Tall Straw Hat";
+			if ( ItemID == 5911 )
+				Name = "Wrath Straw Hat";
+			if ( ItemID == 5912 )
+				Name = "Wrath Wizard's Hat";
+			if ( ItemID == 5913 )
+				Name = "Wrath Bonnet";
+			if ( ItemID == 5914 )
+				Name = "Wrath Feathered Hat";
+			if ( ItemID == 5915 )
+				Name = "Wrath Tricorne Hat";
+			if ( ItemID == 5916 )
+				Name = "Wrath Jester Hat";
+			if ( ItemID == 5440 )
+				Name = "Wrath Bandana";
+			if ( ItemID == 5443 )
+				Name = "Wrath Skullcap";
+
+			Layer = Layer.Helm;
+		}
+
+            	public WrathHats( Serial serial ) : base ( serial ) 
+            	{             
+           	} 
+
+           	public override void Serialize( GenericWriter writer ) 
+           	{ 
+              		base.Serialize( writer ); 
+              		writer.Write( (int) 0 ); 
+           	} 
+            
+           	public override void Deserialize( GenericReader reader ) 
+           	{ 
+              		base.Deserialize( reader ); 
+              		int version = reader.ReadInt(); 
+           	} 
+        } 
+} 

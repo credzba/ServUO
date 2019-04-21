@@ -1,0 +1,310 @@
+using System; 
+using System.Collections;
+using Server.Spells;
+using Server.Items; 
+using Server.Targeting; 
+using Server.ContextMenus;
+using Server.Mobiles;
+using Server.Network;
+
+namespace Server.Items 
+{ 
+	public enum RuneType
+	{
+		None,
+		Fire,
+		Water,
+		Wind,
+		Earth,
+		Spirit,
+		Lightning,
+		Toxic,
+		Ice,
+		Void
+	}
+   	public class SpellRune: Item 
+   	{ 
+		public static bool DisFire = false;
+		public static bool DisWater = false;
+		public static bool DisWind = false;
+		public static bool DisEarth = false;
+		public static bool DisSpirit = false;
+		public static bool DisLightning = false;
+		public static bool DisToxic = false;
+		public static bool DisIce = false;
+		public static bool DisVoid = false;
+
+		private int m_Level;
+		private int m_Exp;
+		private int m_NextLevelExp;
+		private int m_LastLevelExp;
+		private RuneType m_Type;
+		private bool m_UseKeywords;
+		private string m_Spell1Keyword;
+		private string m_Spell2Keyword;
+		private string m_Spell3Keyword;
+		private string m_Spell4Keyword;
+		private string m_Spell5Keyword;
+		private bool m_Spell1;
+		private bool m_Spell2;
+		private bool m_Spell3;
+		private bool m_Spell4;
+		private bool m_Spell5;
+
+		[CommandProperty( AccessLevel.Administrator )]
+		public int Level{ get{ return m_Level; } set{ m_Level = value;InvalidateProperties(); } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public int Exp{ get{ return m_Exp; } set{ m_Exp = value;InvalidateProperties(); } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public int NextLevelExp{ get{ return m_NextLevelExp; } set{ m_NextLevelExp = value;InvalidateProperties(); } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public int LastLevelExp{ get{ return m_LastLevelExp; } set{ m_LastLevelExp = value;InvalidateProperties(); } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public bool UseKeywords{ get{ return m_UseKeywords; } set{ m_UseKeywords = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public string Spell1Keyword{ get{ return m_Spell1Keyword; } set{ m_Spell1Keyword = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public string Spell2Keyword{ get{ return m_Spell2Keyword; } set{ m_Spell2Keyword = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public string Spell3Keyword{ get{ return m_Spell3Keyword; } set{ m_Spell3Keyword = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public string Spell4Keyword{ get{ return m_Spell4Keyword; } set{ m_Spell4Keyword = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public string Spell5Keyword{ get{ return m_Spell5Keyword; } set{ m_Spell5Keyword = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public bool Spell1{ get{ return m_Spell1; } set{ m_Spell1 = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public bool Spell2{ get{ return m_Spell2; } set{ m_Spell2 = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public bool Spell3{ get{ return m_Spell3; } set{ m_Spell3 = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public bool Spell4{ get{ return m_Spell4; } set{ m_Spell4 = value; } }
+		[CommandProperty( AccessLevel.Administrator )]
+		public bool Spell5{ get{ return m_Spell5; } set{ m_Spell5 = value; } }
+
+		[CommandProperty( AccessLevel.Administrator )]
+		public RuneType Type
+		{
+			get{ return m_Type; }
+			set
+			{
+				m_Type = value;
+				if ( m_Type == RuneType.Fire )
+					Hue = 1174;
+				else if ( m_Type == RuneType.Water )
+					Hue = 6;
+				else if ( m_Type == RuneType.Wind )
+					Hue = 906;
+				else if ( m_Type == RuneType.Earth )
+					Hue = 1149;
+				else if ( m_Type == RuneType.Spirit )
+					Hue = 1109;
+				else if ( m_Type == RuneType.Lightning )
+					Hue = 1153;
+				else if ( m_Type == RuneType.Toxic )
+					Hue = 79;
+				else if ( m_Type == RuneType.Ice )
+					Hue = 1152;
+				else if ( m_Type == RuneType.Void )
+					Hue = 1;
+			}
+		}
+
+		[Constructable]
+		public SpellRune( RuneType type ) : base( 0x1F14 )
+		{
+			Weight = 0.0;
+			Type = type;
+			Name = "Rune";
+			NextLevelExp = 25000;
+			LootType = LootType.Blessed;
+		}
+
+            	public SpellRune( Serial serial ) : base ( serial ) 
+            	{             
+           	} 
+
+		public override void GetProperties( ObjectPropertyList list )
+		{
+			base.GetProperties( list );
+
+			list.Add( 1060658, "Type\t{0}", Type );
+			list.Add( 1060659, "Level\t{0}", Level );
+			if ( Level < 5 )
+				list.Add( 1060660, "Exp Until Next Level\t{0}", (NextLevelExp-Exp) );
+		}
+
+		public override bool HandlesOnSpeech{ get{ return true; } }
+
+		public override void OnSpeech( SpeechEventArgs e )
+		{
+			base.OnSpeech( e );
+
+			Mobile from = e.Mobile;
+
+			if ( !(IsChildOf( from )) )
+				return;
+
+			if ( UseKeywords )
+			{
+				if ( Spell1 && Spell1Keyword != null && Spell1Keyword != "" && e.Speech.ToLower().IndexOf( Spell1Keyword.ToLower() ) >= 0 )
+				{
+					if ( !SpellRune.DisFire && Type == RuneType.Fire )
+						new CreateFire( from, null, this ).Cast();
+					if ( !SpellRune.DisWater && Type == RuneType.Water )
+						new Rejuvenation( from, null, this ).Cast();
+					if ( !SpellRune.DisWind && Type == RuneType.Wind )
+						new CarrySound( from, null, this ).Cast();
+					if ( !SpellRune.DisEarth && Type == RuneType.Earth )
+						new LinkOfTheTree( from, null, this ).Cast();
+					if ( !SpellRune.DisSpirit && Type == RuneType.Spirit )
+						new SoulLeech( from, null, this ).Cast();
+					if ( !SpellRune.DisLightning && Type == RuneType.Lightning )
+						new LightningStrike( from, null, this ).Cast();
+					if ( !SpellRune.DisToxic && Type == RuneType.Toxic )
+						new VenomInjection( from, null, this ).Cast();
+					if ( !SpellRune.DisIce && Type == RuneType.Ice )
+						new IceDagger( from, null, this ).Cast();
+					if ( !SpellRune.DisVoid && Type == RuneType.Void )
+						new PureSilence( from, null, this ).Cast();
+				}
+				else if ( Spell2 && Spell2Keyword != null && Spell2Keyword != "" && e.Speech.ToLower().IndexOf( Spell2Keyword.ToLower() ) >= 0 )
+				{
+					if ( !SpellRune.DisFire && Type == RuneType.Fire )
+						new FieryEye( from, null, this ).Cast();
+					if ( !SpellRune.DisWater && Type == RuneType.Water )
+						new MagicFood( from, null, this ).Cast();
+					if ( !SpellRune.DisWind && Type == RuneType.Wind )
+						new Gust( from, null, this ).Cast();
+					if ( !SpellRune.DisEarth && Type == RuneType.Earth )
+						new BlackLotus( from, null, this ).Cast();
+					if ( !SpellRune.DisSpirit && Type == RuneType.Spirit )
+						new SoulLantern( from, null, this ).Cast();
+					if ( !SpellRune.DisLightning && Type == RuneType.Lightning )
+						new LightningField( from, null, this ).Cast();
+					if ( !SpellRune.DisToxic && Type == RuneType.Toxic )
+						new Contagion( from, null, this ).Cast();
+					if ( !SpellRune.DisIce && Type == RuneType.Ice )
+						new IceBonds( from, null, this ).Cast();
+					if ( !SpellRune.DisVoid && Type == RuneType.Void )
+						new Ensnare( from, null, this ).Cast();
+				}
+				else if ( Spell3 && Spell3Keyword != null && Spell3Keyword != "" && e.Speech.ToLower().IndexOf( Spell3Keyword.ToLower() ) >= 0 )
+				{
+					if ( !SpellRune.DisFire && Type == RuneType.Fire )
+						new ChainOfFire( from, null, this ).Cast();
+					if ( !SpellRune.DisWater && Type == RuneType.Water )
+						new AquaElementalSpell( from, null, this ).Cast();
+					if ( !SpellRune.DisWind && Type == RuneType.Wind )
+						new TornadoElementalSpell( from, null, this ).Cast();
+					if ( !SpellRune.DisEarth && Type == RuneType.Earth )
+						new TravelingDirt( from, null, this ).Cast();
+					if ( !SpellRune.DisSpirit && Type == RuneType.Spirit )
+						new SpiritualLink( from, null, this ).Cast();
+					if ( !SpellRune.DisLightning && Type == RuneType.Lightning )
+						new CircleOfLightning( from, null, this ).Cast();
+					if ( !SpellRune.DisToxic && Type == RuneType.Toxic )
+						new Hallucinogen( from, null, this ).Cast();
+					if ( !SpellRune.DisIce && Type == RuneType.Ice )
+						new FrostBite( from, null, this ).Cast();
+					if ( !SpellRune.DisVoid && Type == RuneType.Void )
+						new BlackSpace( from, null, this ).Cast();
+				}
+				else if ( Spell4 && Spell4Keyword != null && Spell4Keyword != "" && e.Speech.ToLower().IndexOf( Spell4Keyword.ToLower() ) >= 0 )
+				{
+					if ( !SpellRune.DisFire && Type == RuneType.Fire )
+						new HeatWave( from, null, this ).Cast();
+					if ( !SpellRune.DisWater && Type == RuneType.Water )
+						new Whirlpool( from, null, this ).Cast();
+					if ( !SpellRune.DisWind && Type == RuneType.Wind )
+						new Revitalization( from, null, this ).Cast();
+					if ( !SpellRune.DisEarth && Type == RuneType.Earth )
+						new StoneSkin( from, null, this ).Cast();
+					if ( !SpellRune.DisSpirit && Type == RuneType.Spirit )
+						new UndeadLegionSpell( from, null, this ).Cast();
+					if ( !SpellRune.DisLightning && Type == RuneType.Lightning )
+						new EnergySource( from, null, this ).Cast();
+					if ( !SpellRune.DisToxic && Type == RuneType.Toxic )
+						new PlagueSpore( from, null, this ).Cast();
+					if ( !SpellRune.DisIce && Type == RuneType.Ice )
+						new IceMeteor( from, null, this ).Cast();
+					if ( !SpellRune.DisVoid && Type == RuneType.Void )
+						new NoFaceSpell( from, null, this ).Cast();
+				}
+				else if ( Spell5 && Spell5Keyword != null && Spell5Keyword != "" && e.Speech.ToLower().IndexOf( Spell5Keyword.ToLower() ) >= 0 )
+				{
+					if ( !SpellRune.DisFire && Type == RuneType.Fire )
+						new FieryWeapon( from, null, this ).Cast();
+					if ( !SpellRune.DisWater && Type == RuneType.Water )
+						new HealingPowder( from, null, this ).Cast();
+					if ( !SpellRune.DisWind && Type == RuneType.Wind )
+						new ArchRevitalization( from, null, this ).Cast();
+					if ( !SpellRune.DisEarth && Type == RuneType.Earth )
+						new EarthWeapon( from, null, this ).Cast();
+					if ( !SpellRune.DisSpirit && Type == RuneType.Spirit )
+						new EntityBarrier( from, null, this ).Cast();
+					if ( !SpellRune.DisLightning && Type == RuneType.Lightning )
+						new LightningWeapon( from, null, this ).Cast();
+					if ( !SpellRune.DisToxic && Type == RuneType.Toxic )
+						new ToxicWeapon( from, null, this ).Cast();
+					if ( !SpellRune.DisIce && Type == RuneType.Ice )
+						new FrostWeapon( from, null, this ).Cast();
+					if ( !SpellRune.DisVoid && Type == RuneType.Void )
+						new SilentBomb( from, null, this ).Cast();
+				}
+			}
+		}
+
+           	public override void OnDoubleClick( Mobile from )
+           	{
+			if ( !(IsChildOf( from )) )
+				return;
+
+			from.SendGump( new RuneSpellGump( from, this ) );
+           	}
+
+           	public override void Serialize( GenericWriter writer ) 
+           	{ 
+              		base.Serialize( writer ); 
+              		writer.Write( (int) 0 ); 
+              		writer.Write( (int) m_Level ); 
+              		writer.Write( (int) m_Exp ); 
+              		writer.Write( (int) m_NextLevelExp ); 
+              		writer.Write( (int) m_LastLevelExp ); 
+              		writer.Write( (int) m_Type ); 
+              		writer.Write( m_UseKeywords ); 
+              		writer.Write( (string)m_Spell1Keyword ); 
+              		writer.Write( (string)m_Spell2Keyword ); 
+              		writer.Write( (string)m_Spell3Keyword ); 
+              		writer.Write( (string)m_Spell4Keyword ); 
+              		writer.Write( (string)m_Spell5Keyword ); 
+              		writer.Write( m_Spell1 ); 
+              		writer.Write( m_Spell2 ); 
+              		writer.Write( m_Spell3 ); 
+              		writer.Write( m_Spell4 ); 
+              		writer.Write( m_Spell5 ); 
+           	} 
+            
+           	public override void Deserialize( GenericReader reader ) 
+           	{ 
+              		base.Deserialize( reader ); 
+              		int version = reader.ReadInt(); 
+              		m_Level = reader.ReadInt(); 
+              		m_Exp = reader.ReadInt(); 
+              		m_NextLevelExp = reader.ReadInt(); 
+              		m_LastLevelExp = reader.ReadInt(); 
+              		m_Type = (RuneType)reader.ReadInt(); 
+              		m_UseKeywords = reader.ReadBool(); 
+              		m_Spell1Keyword = reader.ReadString(); 
+              		m_Spell2Keyword = reader.ReadString(); 
+              		m_Spell3Keyword = reader.ReadString(); 
+              		m_Spell4Keyword = reader.ReadString(); 
+              		m_Spell5Keyword = reader.ReadString(); 
+              		m_Spell1 = reader.ReadBool(); 
+              		m_Spell2 = reader.ReadBool(); 
+              		m_Spell3 = reader.ReadBool(); 
+              		m_Spell4 = reader.ReadBool(); 
+              		m_Spell5 = reader.ReadBool(); 
+           	} 
+        } 
+} 

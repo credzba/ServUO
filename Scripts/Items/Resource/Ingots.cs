@@ -495,4 +495,265 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+   [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class BlazeIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Blaze; } }
+
+        [Constructable]
+        public BlazeIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BlazeIngot(int amount)
+            : base(CraftResource.Blaze, amount)
+        {
+        }
+
+        public BlazeIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+   [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class IceIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Ice; } }
+
+        [Constructable]
+        public IceIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public IceIngot(int amount)
+            : base(CraftResource.Ice, amount)
+        {
+        }
+
+        public IceIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+   [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class ToxicIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Toxic; } }
+
+        [Constructable]
+        public ToxicIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public ToxicIngot(int amount)
+            : base(CraftResource.Toxic, amount)
+        {
+        }
+
+        public ToxicIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+   [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class ElectrumIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Electrum; } }
+
+        [Constructable]
+        public ElectrumIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public ElectrumIngot(int amount)
+            : base(CraftResource.Electrum, amount)
+        {
+        }
+
+        public ElectrumIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+   [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class MoonstoneIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Moonstone; } }
+
+        [Constructable]
+        public MoonstoneIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public MoonstoneIngot(int amount)
+            : base(CraftResource.Moonstone, amount)
+        {
+        }
+
+        public MoonstoneIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+   [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class BloodstoneIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Bloodstone; } }
+
+        [Constructable]
+        public BloodstoneIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public BloodstoneIngot(int amount)
+            : base(CraftResource.Bloodstone, amount)
+        {
+        }
+
+        public BloodstoneIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+   [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class PlatinumIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Platinum; } }
+
+        [Constructable]
+        public PlatinumIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public PlatinumIngot(int amount)
+            : base(CraftResource.Platinum, amount)
+        {
+        }
+
+        public PlatinumIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+
 }

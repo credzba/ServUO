@@ -1,0 +1,128 @@
+
+
+
+				//////		    \\\\\\
+				/////		     \\\\\
+				////  PlayerMobile.cs      \\\\
+				///		       \\\
+				//		        \\
+				/	                         \
+
+
+		public override void Damage( int amount, Mobile from )
+		{
+////////////////////////ADDED FOR RUNE SPELL
+			if ( from != null )
+			{
+				if ( !from.CanBeginAction( typeof(FrostBite) ) )
+					amount -= (int)(amount*0.4);
+				if ( !from.CanBeginAction( typeof(Hallucinogen) ) )
+					amount -= (int)(amount*0.7);
+			}
+			if ( !this.CanBeginAction( typeof(Hallucinogen) ) )
+				amount += (int)(amount*0.7);
+////////////////////////ADDED FOR RUNE SPELL
+
+			if ( Spells.Necromancy.EvilOmenSpell.CheckEffect( this ) )
+				amount = (int)(amount * 1.25);
+
+			Mobile oath = Spells.Necromancy.BloodOathSpell.GetBloodOath( from );
+
+			if ( oath == this )
+			{
+				amount = (int)(amount * 1.1);
+				from.Damage( amount, from );
+			}
+
+////////////////////////ADDED FOR RUNE SPELL
+			Mobile slink = Spells.SpiritualLink.GetSpiritualLink( this );
+			if ( slink != null )
+			{
+				slink.SendMessage( "Your link, "+ this.Name +", has been damaged: "+ amount );
+				slink.SendMessage( "Hits: "+ this.Hits +"/"+ this.HitsMax );
+				slink.SendMessage( "Stam: "+ this.Stam +"/"+ this.StamMax );
+				slink.SendMessage( "Mana: "+ this.Mana +"/"+ this.ManaMax );
+			}
+			Mobile elink = Spells.LinkOfTheTree.GetLinkOfTheTree( this );
+			if ( elink != null )
+			{
+				elink.Damage( amount );
+			}
+			else
+				base.Damage( amount, from );
+////////////////////////ADDED FOR RUNE SPELL
+		}
+////////////////////////ADDED FOR RUNE SPELL
+		public override void Damage( int amount )
+		{
+			if ( !this.CanBeginAction( typeof(Hallucinogen) ) )
+				amount += (int)(amount*0.7);
+			Mobile slink = Spells.SpiritualLink.GetSpiritualLink( this );
+			if ( slink != null )
+			{
+				slink.SendMessage( "Your link, "+ this.Name +", has been damaged: "+ amount );
+				slink.SendMessage( "Hits: "+ this.Hits +"/"+ this.HitsMax );
+				slink.SendMessage( "Stam: "+ this.Stam +"/"+ this.StamMax );
+				slink.SendMessage( "Mana: "+ this.Mana +"/"+ this.ManaMax );
+			}
+			Mobile elink = Spells.LinkOfTheTree.GetLinkOfTheTree( this );
+			if ( elink != null )
+			{
+				elink.Damage( amount );
+			}
+			else
+				base.Damage( amount );
+		}
+////////////////////////ADDED FOR RUNE SPELL
+
+
+				//////		    \\\\\\
+				/////		     \\\\\
+				////  BaseCreature.cs \\\\
+				///		       \\\
+				//			\\
+				/			 \
+
+
+		public override void Damage( int amount, Mobile from )
+		{
+////////////////////////ADDED FOR RUNE SPELL
+			if ( from != null )
+			{
+				if ( !from.CanBeginAction( typeof(FrostBite) ) )
+					amount -= (int)(amount*0.4);
+				if ( !from.CanBeginAction( typeof(Hallucinogen) ) )
+					amount -= (int)(amount*0.7);
+			}
+			if ( !this.CanBeginAction( typeof(Hallucinogen) ) )
+				amount += (int)(amount*0.7);
+////////////////////////ADDED FOR RUNE SPELL
+			int oldHits = this.Hits;
+
+			if ( Spells.Necromancy.EvilOmenSpell.CheckEffect( this ) )
+				amount = (int)(amount * 1.25);
+
+			Mobile oath = Spells.Necromancy.BloodOathSpell.GetBloodOath( from );
+
+			if ( oath == this )
+			{
+				amount = (int)(amount * 1.1);
+				from.Damage( amount, from );
+			}
+
+			base.Damage( amount, from );
+
+			if ( SubdueBeforeTame && !Controled )
+			{
+				if ( (oldHits > (this.HitsMax / 10)) && (this.Hits <= (this.HitsMax / 10)) )
+					PublicOverheadMessage( MessageType.Regular, 0x3B2, false, "* The creature has been beaten into subjugation! *" );
+			}
+		}
+////////////////////////ADDED FOR RUNE SPELL
+		public override void Damage( int amount )
+		{
+			if ( !this.CanBeginAction( typeof(Hallucinogen) ) )
+				amount += (int)(amount*0.7);
+			base.Damage( amount );
+		}
+////////////////////////ADDED FOR RUNE SPELL

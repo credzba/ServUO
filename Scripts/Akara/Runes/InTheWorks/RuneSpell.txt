@@ -1,0 +1,311 @@
+using System;
+using System.Collections;
+using Server;
+using Server.Spells;
+using Server.Network;
+using Server.Mobiles;
+using Server.Items;
+using Server.Spells.Necromancy;
+
+namespace Server.Spells
+{
+	public abstract class RuneSpell : Spell
+	{
+		public abstract int RuneGainMax{ get; }
+		public abstract int RuneGainMin{ get; }
+
+		public override SkillName CastSkill{ get{ return SkillName.Inscribe; } }
+		public override bool ClearHandsOnCast{ get{ return false; } }
+
+		public SpellRune Rune;
+		public ArrayList RunicItems = new ArrayList();
+		public ArrayList WrathItems = new ArrayList();
+		public int LLS = 0;
+		public int SI = 0;
+		public int WP = 0;
+		public int StaffRunes = 0;
+
+		public RuneSpell( Mobile caster, Item scroll, SpellInfo info, SpellRune rune ) : base( caster, scroll, info )
+		{
+			Rune = rune;
+			GetSpecialItems();
+			CalculateAttributes();
+		}
+		public override void SayMantra()
+		{
+			base.SayMantra();
+			Caster.PlaySound( Utility.RandomList( 696, 697, 698, 699, 700 ) );
+		}
+		public override int ScaleMana( int mana )
+		{
+			double scalar = 1.0;
+
+			if ( !Necromancy.MindRotSpell.GetMindRotScalar( Caster, ref scalar ) )
+				scalar = 1.0;
+
+			return (int)(mana * scalar);
+		}
+		public virtual bool ConsumeReagents()
+		{
+			if ( Scroll != null || !Caster.Player )
+				return true;
+
+			Container pack = Caster.Backpack;
+
+			if ( pack == null )
+				return false;
+
+			if ( pack.ConsumeTotal( Info.Reagents, Info.Amounts ) == -1 )
+				return true;
+
+			if ( GetType().BaseType == typeof( RuneSpell ) )
+			{
+				if ( RunicItem.ConsumeCharges( Caster, 1 + (int)Circle ) )
+					return true;
+			}
+
+			return false;
+		}
+
+		private static int[] m_RuneManaTable = new int[]{ 0, 0, 0, 4, 6, 9, 11, 14 };
+
+		public override int GetMana()
+		{
+			if ( Scroll is BaseWand )
+				return 0;
+
+			return m_RuneManaTable[(int)Circle];
+		}
+		public override void DoFizzle()
+		{
+			Caster.PlaySound( 776 );
+			Caster.NextSpellTime = DateTime.Now;
+		}
+		public override void DoHurtFizzle()
+		{
+			Caster.PlaySound( 777 );
+		}
+		public override void OnDisturb( DisturbType type, bool message )
+		{
+			base.OnDisturb( type, message );
+
+			if ( message )
+				Caster.PlaySound( 777 );
+		}
+		public override void OnBeginCast()
+		{
+			base.OnBeginCast();
+
+			Caster.FixedEffect( 0x37C4, 10, 42, 4, 3 );
+		}
+		public override bool CheckSequence()
+		{
+			int mana = ScaleMana( GetMana() );
+
+			if ( Caster.Deleted || !Caster.Alive || Caster.Spell != this || State != SpellState.Sequencing )
+			{
+				DoFizzle();
+			}
+			else if ( Scroll != null && !(Scroll is Runebook) && (Scroll.Amount <= 0 || Scroll.Deleted || Scroll.RootParent != Caster || (Scroll is BaseWand && (((BaseWand)Scroll).Charges <= 0 || Scroll.Parent != Caster))) )
+			{
+				DoFizzle();
+			}
+			else if ( !ConsumeReagents() )
+			{
+				Caster.PublicOverheadMessage( MessageType.Regular, 0x22, false, "More gems are needed for this spell." );
+			}
+			else if ( Caster.Mana < mana )
+			{
+				Caster.LocalOverheadMessage( MessageType.Regular, 0x22, 502625 ); // Insufficient mana for this spell.
+			}
+			else if ( Core.AOS && (Caster.Frozen || Caster.Paralyzed) )
+			{
+				Caster.SendLocalizedMessage( 502646 ); // You cannot cast a spell while frozen.
+				DoFizzle();
+			}
+			else if ( CheckFizzle() )
+			{
+				Caster.Mana -= mana;
+
+				if ( Scroll is SpellScroll )
+					Scroll.Consume();
+				else if ( Scroll is BaseWand )
+					((BaseWand)Scroll).ConsumeCharge( Caster );
+
+				if ( Scroll is BaseWand )
+				{
+					bool m = Scroll.Movable;
+
+					Scroll.Movable = false;
+
+					if ( ClearHandsOnCast )
+						Caster.ClearHands();
+
+					Scroll.Movable = m;
+				}
+				else
+				{
+					if ( ClearHandsOnCast )
+						Caster.ClearHands();
+				}
+
+				int karma = ComputeKarmaAward();
+
+				if ( karma != 0 )
+					Misc.Titles.AwardKarma( Caster, karma, true );
+
+				if ( TransformationSpell.UnderTransformation( Caster, typeof( VampiricEmbraceSpell ) ) )
+				{
+					bool garlic = false;
+
+					for ( int i = 0; !garlic && i < Info.Reagents.Length; ++i )
+						garlic = ( Info.Reagents[i] == Reagent.Garlic );
+
+					if ( garlic )
+					{
+						Caster.SendLocalizedMessage( 1061651 ); // The garlic burns you!
+						AOS.Damage( Caster, Utility.RandomMinMax( 17, 23 ), 100, 0, 0, 0, 0 );
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				DoFizzle();
+			}
+
+			return false;
+		}
+		public virtual void GainExp()
+		{
+			if ( Rune.Level < 5 )
+			{
+				Rune.Exp += Utility.RandomMinMax( RuneGainMin, RuneGainMax );
+				if ( Rune.Exp >= Rune.NextLevelExp )
+				{
+					LevelUp();
+				}
+			}
+		}
+		public virtual void LevelUp()
+		{
+			if ( Rune.Exp >= Rune.NextLevelExp )
+			{
+				Rune.LastLevelExp = Rune.NextLevelExp;
+				int NEWNextLevelExp = (int)(( ((Rune.LastLevelExp*0.15)*Rune.Level)+Rune.LastLevelExp )+Rune.LastLevelExp);
+				Rune.Level += 1;
+				Rune.NextLevelExp = NEWNextLevelExp;
+				Caster.Say( Caster.Name+"'s "+Rune.Type+" Rune has gained a level." );
+				Caster.PlaySound( 61 );
+			}
+		}
+		public virtual void GetSpecialItems()
+		{
+			ArrayList itemlist = Caster.Items;
+			foreach ( Item item in itemlist )
+			{
+				if ( item is RunicItem && item.Parent == Caster )
+				{
+					RunicItem ritem = (RunicItem)item;
+					if ( ritem.Type == Rune.Type && ritem.Level == Rune.Level )
+						RunicItems.Add( ritem );
+				}
+			}
+			foreach ( Item item in itemlist )
+			{
+				if ( item is WrathItem && item.Parent == Caster )
+				{
+					WrathItem witem = (WrathItem)item;
+					if ( witem.Using )
+						WrathItems.Add( witem );
+				}
+			}
+			foreach ( Item item in itemlist )
+			{
+				if ( item is RuneStaff && item.Parent == Caster )
+				{
+					RuneStaff staff = (RuneStaff)item;
+
+					int count = 0;
+					ArrayList list = new ArrayList();
+					foreach( SpellRune rune in staff.Runes )
+					{
+						if ( rune.Owner == Caster )
+						{
+							count += rune.Level;
+						}
+						else
+							list.Add( rune );
+					}
+					foreach( SpellRune rune in list )
+					{
+						if ( staff.Runes.Contains( rune ) )
+							staff.Runes.Remove( rune );
+					}
+					StaffRunes = count;
+				}
+			}
+		}
+		public virtual void CalculateAttributes()
+		{
+			int lls = 0;
+			int si = 0;
+			int wp = 0;
+			foreach ( RunicItem ritem in RunicItems )
+			{
+				lls += ritem.LongerLastingSpells;
+				si += ritem.SpellIncrease;
+			}
+			LLS = lls;
+			SI = si;
+			foreach ( WrathItem witem in WrathItems )
+			{
+				wp += witem.Power;
+			}
+			WP = Utility.RandomMinMax( 0, wp );
+
+			int wpamount = WP;
+
+			for ( int i = 0; i < WrathItems.Count; ++i )
+			{
+				object obj = WrathItems[i];
+
+				if ( obj is WrathItem )
+				{
+					WrathItem wi = (WrathItem)obj;
+
+					if ( wi.Power > wpamount )
+					{
+						wi.Power -= wpamount;
+						break;
+					}
+					else
+					{
+						wpamount -= wi.Power;
+						wi.Power = 0;
+					}
+				}
+			}
+		}
+		public virtual int CalculateAttributes( int attamount, int amount )
+		{
+			double i1 = attamount / 100;
+			int i2 = (int)(i1*amount);
+
+			i2 += CalculateAttributes( attamount, WP );
+			i2 += CalculateAttributes( attamount, StaffRunes );
+
+			return i2;
+		}
+		public virtual double CalculateAttributes( double attamount, int amount )
+		{
+			double i1 = (attamount / 100)*amount;
+
+			i1 += CalculateAttributes( attamount, WP );
+			i1 += CalculateAttributes( attamount, StaffRunes );
+
+			return i1;
+		}
+	}
+}

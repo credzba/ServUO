@@ -1,0 +1,34 @@
+using System; 
+using Server.Spells;
+using Server.Items; 
+using Server.Targeting; 
+
+namespace Server.Items 
+{ 
+   	public class WrathShroud: WrathItem 
+   	{ 
+		[Constructable]
+		public WrathShroud() : base( 0x2684 )
+		{
+			Weight = 10.0;
+			Name = "Wrath Shroud";
+			Layer = Layer.OuterTorso;
+		}
+
+            	public WrathShroud( Serial serial ) : base ( serial ) 
+            	{             
+           	} 
+
+           	public override void Serialize( GenericWriter writer ) 
+           	{ 
+              		base.Serialize( writer ); 
+              		writer.Write( (int) 0 ); 
+           	} 
+            
+           	public override void Deserialize( GenericReader reader ) 
+           	{ 
+              		base.Deserialize( reader ); 
+              		int version = reader.ReadInt(); 
+           	} 
+        } 
+} 
